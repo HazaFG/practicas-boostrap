@@ -23,7 +23,6 @@ if (isset($_POST['action'])) {
 class AuthController {
     public function login($email = '', $contrasena = '') {
         
-        <?php
         $curl = curl_init();
         curl_setopt_array($curl, array(
           CURLOPT_URL => 'https://crud.jonathansoto.mx/api/login',
@@ -43,8 +42,8 @@ class AuthController {
         $response = json_decode($response);  
         
         if(isset($response->data->name)){
-            $_SESSION['user_data'] = $response->data
-            $_SESSION['user_id'] = $response->data->id
+            $_SESSION['user_data'] = $response->data;
+            $_SESSION['user_id'] = $response->data->id;
         }
 
         echo $response->data->name;
