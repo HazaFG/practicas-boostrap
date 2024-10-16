@@ -1,3 +1,11 @@
+<?php
+ session_start();
+
+  include_once("app/ProductController.php");
+  $productController = new ProductController();
+  $products = $productController->getAllProducts($_SESSION['api_token']);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -73,43 +81,22 @@
         <!-- Esto es lo del feature -->
         <div class="card mb-4 mt-4">
           <div class="row g-0">
-            <div id="carouselExampleIndicators" class="carousel slide">
-                <div class="carousel-indicators">
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                </div>
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="jedi.jpg" class="d-block w-100" alt="Yoda" style="width: 100%; height: 400px; object-fit: cover;">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="cal.webp" class="d-block w-100" alt="Cal" style="width: 100%; height: 400px; object-fit: cover;">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="mando.jpg" class="d-block w-100" alt="Mando" style="width: 100%; height: 400px; object-fit: cover;">
-                  </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-            </div>                                      
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <h3>$100.00 MXN</h3>
-                <p class="card-text">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
+                  <?php if (!empty($products)) : ?>
+                      <?php foreach ($products as $product) : ?>
+                          <div class="col">
+                              <div class="card">
+                                  <div class="card-body">
+                                      <img class="d-block w-50 mx-auto" src="<?= $product->cover ?>">
+                                      <h5 class="card-title pt-3"><?= $product->name ?></h5>
+                                      <p class="card-text"><?= $product->description ?></p>
+                                      <a href="details.php?id=<?= $product->id ?>" class="btn btn-dark" role="button" aria-pressed="true">Ver detalles</a>
+                                  </div>
+                              </div>
+                          </div>
+                      <?php endforeach; ?>
+                  <?php else : ?>
+                      <p>NO EXISTEN</p>
+                  <?php endif; ?>                                    
           </div>
         </div>
 

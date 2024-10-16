@@ -1,3 +1,11 @@
+<?php
+  session_start();
+  if (isset($_SESSION['error_message'])) {
+    echo '<div class="alert alert-danger alert-overlay" role="alert">' . $_SESSION['error_message'] . '</div>';
+    unset($_SESSION['error_message']);
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,5 +46,7 @@
         </div>
       </div>
     </div>
+
+    <script src = "user.js"></script>
 </body>
 </html>
