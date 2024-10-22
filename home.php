@@ -80,7 +80,7 @@
         </nav>
 
         <!-- Botón para abrir la ventana modal -->
-        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#loginModal">
+        <button type="button" class="btn btn-info flex float-end m-5" data-bs-toggle="modal" data-bs-target="#loginModal">
             Añadir
         </button>
 
@@ -93,17 +93,38 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" id="email" placeholder="Ingrese su correo electrónico" required>
+                      <form method="POST" action="app/ProductController.php" enctype="multipart/form-data">
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-2 col-form-label">Nombre</label>
+                            <div class="col-sm-10 pb-4">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Lavadora perrona" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+                        </div>
+                        <div class="form-group row">
+                            <label for="slug" class="col-sm-2 col-form-label">Slug</label>
+                            <div class="col-sm-10 pb-4">
+                                <input type="text" class="form-control" id="slug" name="slug" placeholder="lavadora-perrona" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-                        </form>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label">Descripción</label>
+                            <div class="col-sm-10 pb-4">
+                                <textarea class="form-control" id="description" name="description" placeholder="Este producto cuenta con cierta característica" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="features" class="col-sm-2 col-form-label">Features</label>
+                            <div class="col-sm-10 pb-4">
+                                <textarea class="form-control" id="features" name="features" placeholder="..." rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group custom-file pb-4">
+                            <input type="file" class="custom-file-input" id="cover" name="cover" lang="es">
+                            <label class="custom-file-label" for="cover">Seleccionar Archivo</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar producto</button>
+                    </form>
+
                     </div>
                 </div>
             </div>
@@ -127,7 +148,7 @@
                                         <h5 class="card-title pt-3"><?= $product->name ?></h5>
                                         <p class="card-text"><?= $product->description ?></p>
                                         <!-- Botón para ver detalles -->
-                                        <a href="details.php?id=<?= $product->id ?>" class="btn btn-dark mb-2" role="button" aria-pressed="true">Ver detalles</a>
+                                        <a href="details.php?slug=<?= urlencode($product->slug) ?>" class="btn btn-dark mb-2" role="button" aria-pressed="true">Ver detalles</a>
                                         <!-- Botones de editar y eliminar -->
                                         <div class="d-flex justify-content-between">
                                             <a href="edit.php?id=<?= $product->id ?>" class="btn btn-primary btn-sm">Editar</a>

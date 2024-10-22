@@ -2,12 +2,19 @@
 session_start();
 include_once("app/ProductController.php");
 
-if (isset($_GET['id'])) {
-    $productId = $_GET['id'];
+if (isset($_GET['slug'])) {
+    $slug = $_GET['slug'];
     $productController = new ProductController();
-    $product = $productController->getProductById($productId, $_SESSION['api_token']);
+    
+    //buscar por slug 
+    $product = $productController->getProductBySlug($slug, $_SESSION['api_token']);
 
-    $price = $product->presentations[0]->price[0]->amount;
+    if ($product) {
+        $price = $product->presentations[0]->price[0]->amount;
+    } else {
+        echo "Producto no encontrado.";
+        exit;
+    }
 } else {
     echo "Producto no encontrado.";
     exit;
@@ -103,7 +110,7 @@ if (isset($_GET['id'])) {
                 <h5 class="card-title"><?= $product->name ?></h5>
                 <p class="card-text"><?= $product->description ?></p>
                 <h3><?= $price ?> MXN</h3>
-                <a href="checkout.php?id=<?= $product->id ?>" class="btn btn-primary">Comprar ahora</a>
+                <a href="checkout.php?slug=<?= urlencode($product->slug) ?>" class="btn btn-primary">Comprar ahora</a>
               </div>                                   
           </div>
         </div>
