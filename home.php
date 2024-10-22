@@ -13,6 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TAILWIND ES MEJOR</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 </head>
 <body>
   <div class="container-fluid">
@@ -78,27 +79,73 @@
           </div>
         </nav>
 
+        <!-- Botón para abrir la ventana modal -->
+        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#loginModal">
+            Añadir
+        </button>
+
+        <!-- Ventana modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="email" placeholder="Ingrese su correo electrónico" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Esto es lo del feature -->
         <div class="card mb-4 mt-4">
-          <div class="row g-0">
-                  <?php if (!empty($products)) : ?>
-                      <?php foreach ($products as $product) : ?>
-                          <div class="col">
-                              <div class="card">
-                                  <div class="card-body">
-                                      <img class="d-block w-50 mx-auto" src="<?= $product->cover ?>">
-                                      <h5 class="card-title pt-3"><?= $product->name ?></h5>
-                                      <p class="card-text"><?= $product->description ?></p>
-                                      <a href="details.php?id=<?= $product->id ?>" class="btn btn-dark" role="button" aria-pressed="true">Ver detalles</a>
-                                  </div>
-                              </div>
-                          </div>
-                      <?php endforeach; ?>
-                  <?php else : ?>
-                      <p>NO EXISTEN</p>
-                  <?php endif; ?>                                    
-          </div>
+            <?php if (!empty($products)) : ?>
+                <div class="container">
+                    <div class="row">
+                        <?php foreach ($products as $index => $product) : ?>
+                            <!-- Crear nueva fila después de cada 5 productos -->
+                            <?php if ($index > 0 && $index % 5 == 0) : ?>
+                                </div><div class="row">
+                            <?php endif; ?>
+
+                            <div class="col-md-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <img class="d-block w-50 mx-auto" src="<?= $product->cover ?>" alt="<?= $product->name ?>">
+                                        <h5 class="card-title pt-3"><?= $product->name ?></h5>
+                                        <p class="card-text"><?= $product->description ?></p>
+                                        <!-- Botón para ver detalles -->
+                                        <a href="details.php?id=<?= $product->id ?>" class="btn btn-dark mb-2" role="button" aria-pressed="true">Ver detalles</a>
+                                        <!-- Botones de editar y eliminar -->
+                                        <div class="d-flex justify-content-between">
+                                            <a href="edit.php?id=<?= $product->id ?>" class="btn btn-primary btn-sm">Editar</a>
+                                            <a href="delete.php?id=<?= $product->id ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php else : ?>
+                <p>NO EXISTEN</p>
+            <?php endif; ?>
         </div>
+
+
 
         <h4>Historial de pedidos</h4>
         <table class="table table-striped">
