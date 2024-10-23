@@ -107,9 +107,7 @@ class ProductController
   function updateProduct($id, $data, $token)
   {
       $curl = curl_init();
-  
-      // Construye los datos que enviarás en la solicitud
-      $postFields = http_build_query(array_merge($data, ['id' => $id]));
+        $postFields = http_build_query(array_merge($data, ['id' => $id]));
   
       curl_setopt_array($curl, array(
           CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
@@ -144,10 +142,9 @@ class ProductController
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
   session_start();
   $productController = new ProductController();
-  $token = $_SESSION['api_token']; // Asegúrate de que tienes un token válido
+  $token = $_SESSION['api_token']; 
 
   if (isset($_POST['productId'])) {
-      // Lógica para actualizar el producto existente
       $productId = $_POST['productId'];
       $data = [
           'name' => $_POST['name'],
@@ -156,8 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
           'features' => $_POST['features'],
       ];
 
-      // Llama a la función para actualizar el producto
-      $productController->updateProduct($productId, $data, $token); // Ahora usando el token correctamente
+      $productController->updateProduct($productId, $data, $token);
   }
 }
 
