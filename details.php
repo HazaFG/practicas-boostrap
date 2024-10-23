@@ -11,6 +11,10 @@ if (isset($_GET['slug'])) {
 
     if ($product) {
         $price = $product->presentations[0]->price[0]->amount;
+        $productId = $product->id; // Aquí obtenemos el ID del producto
+        
+        // Enviar el ID del producto a la consola
+        echo "<script>console.log('ID del producto: " . $productId . "');</script>";
     } else {
         echo "Producto no encontrado.";
         exit;
@@ -20,6 +24,7 @@ if (isset($_GET['slug'])) {
     exit;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

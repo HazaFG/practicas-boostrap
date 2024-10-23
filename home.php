@@ -89,7 +89,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+                        <h5 class="modal-title" id="loginModalLabel">Agregar un producto</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -98,6 +98,53 @@
                             <label for="name" class="col-sm-2 col-form-label">Nombre</label>
                             <div class="col-sm-10 pb-4">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Lavadora perrona" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="slug" class="col-sm-2 col-form-label">Slug</label>
+                            <div class="col-sm-10 pb-4">
+                                <input type="text" class="form-control" id="slug" name="slug" placeholder="lavadora-perrona" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label">Descripción</label>
+                            <div class="col-sm-10 pb-4">
+                                <textarea class="form-control" id="description" name="description" placeholder="Este producto cuenta con cierta característica" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="features" class="col-sm-2 col-form-label">Features</label>
+                            <div class="col-sm-10 pb-4">
+                                <textarea class="form-control" id="features" name="features" placeholder="..." rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group custom-file pb-4">
+                            <input type="file" class="custom-file-input" id="cover" name="cover" lang="es">
+                            <label class="custom-file-label" for="cover">Seleccionar Archivo</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar producto</button>
+                    </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ventana modal PERO PARA EDITAR -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Editar un producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form method="POST" action="app/ProductController.php" enctype="multipart/form-data">
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-2 col-form-label">Nombre</label>
+                            <div class="col-sm-10 pb-4">
+                                <input type="hidden" id="productId" name="productId">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Edita aqui" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -151,7 +198,7 @@
                                         <a href="details.php?slug=<?= urlencode($product->slug) ?>" class="btn btn-dark mb-2" role="button" aria-pressed="true">Ver detalles</a>
                                         <!-- Botones de editar y eliminar -->
                                         <div class="d-flex justify-content-between">
-                                            <a href="edit.php?id=<?= $product->id ?>" class="btn btn-primary btn-sm">Editar</a>
+                                            <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">Editar</a>
                                             <a href="delete.php?id=<?= $product->id ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
                                         </div>
                                     </div>

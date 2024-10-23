@@ -103,7 +103,66 @@ class ProductController
   
       return json_decode($response);
   }  
+
+  function updateProduct($id, $data, $token)
+  {
+      $curl = curl_init();
+  
+      // Construye los datos que enviarás en la solicitud
+      $postFields = http_build_query(array_merge($data, ['id' => $id]));
+  
+      curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'PUT',
+          CURLOPT_POSTFIELDS => $postFields,
+          CURLOPT_HTTPHEADER => array(
+              'Content-Type: application/x-www-form-urlencoded',
+              'Authorization: Bearer ' . $token, // Usa el token que estás pasando
+          ),
+      ));
+  
+      $response = curl_exec($curl);
+      $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+  
+      curl_close($curl);
+  
+      if ($http_status != 200) {
+          echo "Error: HTTP Status Code: $http_status\n";
+      } else {
+          echo "Success: $response\n";
+      }
+  }
+
 }
+  
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+  session_start();
+  $productController = new ProductController();
+  $token = $_SESSION['api_token']; // Asegúrate de que tienes un token válido
+
+  if (isset($_POST['productId'])) {
+      // Lógica para actualizar el producto existente
+      $productId = $_POST['productId'];
+      $data = [
+          'name' => $_POST['name'],
+          'slug' => $_POST['slug'],
+          'description' => $_POST['description'],
+          'features' => $_POST['features'],
+      ];
+
+      // Llama a la función para actualizar el producto
+      $productController->updateProduct($productId, $data, $token); // Ahora usando el token correctamente
+  }
+}
+
+  
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   session_start();
@@ -128,11 +187,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($result === null) {
       echo "Error: No se recibió respuesta de la API.";
   } else if (isset($result->success) && $result->success) {
-      header("Location: success.php"); 
       exit;
   } else {
       if (isset($result->message) && strpos($result->message, 'creado correctamente') !== false) {
-          header("Location: home.php");
+          header("Location: ../home.php");
           exit;
       } else {
           $errorMessage = isset($result->message) ? $result->message : 'Ocurrió un error desconocido.';
