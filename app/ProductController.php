@@ -52,7 +52,7 @@ class ProductController
   {
     $curl = curl_init();
     curl_setopt_array($curl, array(
-      CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/slug/' . $slug, // Cambia a la URL correcta para buscar por slug
+      CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/slug/' . $slug,
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => '',
       CURLOPT_MAXREDIRS => 10,
@@ -107,7 +107,9 @@ class ProductController
   function updateProduct($id, $data, $token)
   {
       $curl = curl_init();
-        $postFields = http_build_query(array_merge($data, ['id' => $id]));
+  
+      // Construye los datos que enviarás en la solicitud
+      $postFields = http_build_query(array_merge($data, ['id' => $id]));
   
       curl_setopt_array($curl, array(
           CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
@@ -117,11 +119,11 @@ class ProductController
           CURLOPT_TIMEOUT => 0,
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'PUT',
+          CURLOPT_CUSTOMREQUEST => 'POST',
           CURLOPT_POSTFIELDS => $postFields,
           CURLOPT_HTTPHEADER => array(
               'Content-Type: application/x-www-form-urlencoded',
-              'Authorization: Bearer ' . $token, // Usa el token que estás pasando
+              'Authorization: Bearer ' . $token,
           ),
       ));
   
@@ -137,35 +139,62 @@ class ProductController
       }
   }
 
+
+
+  function deleteProduct($productId) {
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/' . $productId,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'DELETE',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer ' . $_SESSION['api_token'],
+            'Content-Type: application/json',
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    $decodedResponse = json_decode($response);
+
+    if ($decodedResponse && isset($decodedResponse->code) && $decodedResponse->code == 4) {
+        header("Location: ../home.php?status=deleted");
+    } else {
+        header("Location: ../home.php?status=error");
+    }
+}
+
+  
 }
   
-if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-  session_start();
-  $productController = new ProductController();
-  $token = $_SESSION['api_token']; 
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    session_start();
+    $productController = new ProductController();
+    $token = $_SESSION['api_token']; 
 
-  if (isset($_POST['productId'])) {
-      $productId = $_POST['productId'];
-      $data = [
-          'name' => $_POST['name'],
-          'slug' => $_POST['slug'],
-          'description' => $_POST['description'],
-          'features' => $_POST['features'],
-      ];
-
-      $productController->updateProduct($productId, $data, $token);
+      if (isset($_POST['productId'])) {
+          $productId = $_POST['productId'];
+          $data = [
+              'name' => $_POST['name'],
+              'slug' => $_POST['slug'],
+              'description' => $_POST['description'],
+              'features' => $_POST['features'],
+          ];
+  
+          $productController->updateProduct($productId, $data, $token);
+        }
   }
-}
-
   
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   session_start();
   $productController = new ProductController();
-  $token = $_SESSION['api_token']; // Asegúrate de que tienes un token válido
+  $token = $_SESSION['api_token']; 
 
-  // Capturar los datos del formulario
   $data = [
       'name' => $_POST['name'],
       'slug' => $_POST['slug'],

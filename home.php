@@ -139,14 +139,16 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form method="POST" action="app/ProductController.php" enctype="multipart/form-data">
-                        <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">Nombre</label>
-                            <div class="col-sm-10 pb-4">
-                                <input type="hidden" id="productId" name="productId">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Edita aqui" required>
-                            </div>
-                        </div>
+                    <form method="POST" action="app/ProductController.php" enctype="multipart/form-data">
+                      <input type="hidden" name="_method" value="PUT"> <!-- Simula el método PUT -->
+                      <input type="hidden" name="action" value="update"> <!-- Campo oculto para la acción -->
+                      <div class="form-group row">
+                          <label for="name" class="col-sm-2 col-form-label">Nombre</label>
+                          <div class="col-sm-10 pb-4">
+                              <input type="hidden" id="productId" name="productId">
+                              <input type="text" class="form-control" id="name" name="name" placeholder="Edita aqui" required>
+                          </div>
+                      </div>
                         <div class="form-group row">
                             <label for="slug" class="col-sm-2 col-form-label">Slug</label>
                             <div class="col-sm-10 pb-4">
@@ -170,7 +172,7 @@
                             <label class="custom-file-label" for="cover">Seleccionar Archivo</label>
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar producto</button>
-                    </form>
+                      </form>
 
                     </div>
                 </div>
@@ -199,8 +201,8 @@
                                         <!-- Botones de editar y eliminar -->
                                         <div class="d-flex justify-content-between">
                                             <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">Editar</a>
-                                            <a href="delete.php?id=<?= $product->id ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
-                                        </div>
+                                            <a href="delete.php?id=<?= $product->id ?>" class="btn btn-danger btn-borrar">Borrar</a>
+                                            </div>
                                     </div>
                                 </div>
                             </div>
