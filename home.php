@@ -1,9 +1,13 @@
 <?php
- session_start();
-
+if (!isset($_SESSION)) {
+	session_start();
+}
   include_once("app/ProductController.php");
   $productController = new ProductController();
   $products = $productController->getAllProducts($_SESSION['api_token']);
+  include_once("app/BrandController.php");
+  $brandController = new BrandController();
+  $brands = $brandController->get();
 ?>
 
 <!DOCTYPE html>
@@ -122,6 +126,16 @@
                             <input type="file" class="custom-file-input" id="cover" name="cover" lang="es">
                             <label class="custom-file-label" for="cover">Seleccionar Archivo</label>
                         </div>
+                        <select class="form-control">
+                          <?php if (isset($brands) && count($brands)): ?>
+                          <?php foreach ($brands as $brand): ?>
+                          <option value="<?= $brand->id ?>">
+                            <?= $brand->name ?>
+                          </option>
+                          <?php endforeach ?>
+                          <?php endif ?>
+                          
+                        </select>
                         <button type="submit" class="btn btn-primary">Guardar producto</button>
                     </form>
 
@@ -171,6 +185,17 @@
                             <input type="file" class="custom-file-input" id="cover" name="cover" lang="es">
                             <label class="custom-file-label" for="cover">Seleccionar Archivo</label>
                         </div>
+
+                        <select class="form-control">
+                          <?php if (isset($brands) && count($brands)): ?>
+                          <?php foreach ($brands as $brand): ?>
+                          <option value="<?= $brand->id ?>">
+                            <?= $brand->name ?>
+                          </option>
+                          <?php endforeach ?>
+                          <?php endif ?>
+                          
+                        </select>
                         <button type="submit" class="btn btn-primary">Guardar producto</button>
                       </form>
 
