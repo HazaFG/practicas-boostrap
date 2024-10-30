@@ -1,0 +1,20 @@
+# Activar el módulo Rewrite
+RewriteEngine On
+
+# Redirigir todas las solicitudes a index.php si el archivo o directorio no existe
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# # Permitir acceso a archivos en la carpeta assets
+# <FilesMatch "\.(jpg|jpeg|png|webp|css|js)$">
+#     Allow from all
+# </FilesMatch>
+
+# Redirigir a rutas específicas
+RewriteRule ^home$ home.php [L]
+RewriteRule ^details$ details.php [L]
+RewriteRule ^delete$ delete.php [L]
+
+# Configurar página de error 404
+ErrorDocument 404 /404.php

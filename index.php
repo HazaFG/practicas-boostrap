@@ -1,10 +1,16 @@
 <?php
-  session_start();
-  if (isset($_SESSION['error_message'])) {
+session_start();
+
+if (!isset($_SESSION['global_token'])) {
+    $_SESSION['global_token'] = bin2hex(random_bytes(32)); // Genera un token único
+}
+
+if (isset($_SESSION['error_message'])) {
     echo '<div class="alert alert-danger alert-overlay" role="alert">' . $_SESSION['error_message'] . '</div>';
     unset($_SESSION['error_message']);
-  }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +30,7 @@
         </div>
   
         <div class="col-md-6 d-flex align-items-center justify-content-center">
-          <form class="w-75" method="POST" action="app/AuthController.php">
+        <form class="w-75" method="POST" action="app/AuthController.php">
             <div class="mb-3">
                 <h1>Hola, inscríbete para ser un Jedi</h1>
                 <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
@@ -42,7 +48,9 @@
             <button type="submit" class="btn btn-primary w-100">Submit</button>
 
             <input type="hidden" name="action" value="access">
-          </form>
+            <input type="hidden" name="global_token" value="<?php echo $_SESSION['global_token']; ?>"> <!-- Aquí se envía el token -->
+        </form>
+
         </div>
       </div>
     </div>
