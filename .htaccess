@@ -1,16 +1,33 @@
-# Activar el módulo Rewrite
-RewriteEngine On
+# # Activar el módulo Rewrite
+# RewriteEngine On
 
-# Redirigir todas las solicitudes a index.php si el archivo o directorio no existe
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
+# # Redirigir todas las solicitudes a index.php si el archivo o directorio no existe
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^(.*)$ index.php [QSA,L]
 
-# Redirigir a rutas específicas
-RewriteRule ^home$ home.php [L]
-RewriteRule ^product/([^/]+)/?$ product.php?slug=$1 [QSA,L]
-RewriteRule ^auth$ app/AuthController.php [L]
-RewriteRule ^resources$ app/ProductController.php [L]
+# # Redirigir a rutas específicas
+# RewriteRule ^home$ home.php [L]
+# RewriteRule ^product/([^/]+)/?$ product.php?slug=$1 [QSA,L]
+# RewriteRule ^auth$ app/AuthController.php [L]
+# RewriteRule ^resources$ app/ProductController.php [L]
 
-# Configurar página de error 404
-ErrorDocument 404 /404.php
+# # Configurar página de error 404
+# ErrorDocument 404 /404.php
+
+Options +FollowSymLinks -MultiViews -Indexes
+RewriteEngine on
+
+
+#páginas
+RewriteRule ^login?$ index.php
+RewriteRule ^home/?$ views/home.php
+RewriteRule ^products/?$ views/products/index.php
+RewriteRule ^products/create/?$ views/products/create.php
+RewriteRule ^products/([^/]+)/?$ views/products/details.php
+
+
+
+#controladores
+RewriteRule ^auth?$ app/AuthController.php
+RewriteRule ^products?$ app/ProductController.php

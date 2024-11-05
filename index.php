@@ -1,59 +1,75 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['global_token'])) {
-    $_SESSION['global_token'] = bin2hex(random_bytes(32)); // Genera un token único
-}
-
-if (isset($_SESSION['error_message'])) {
-    echo '<div class="alert alert-danger alert-overlay" role="alert">' . $_SESSION['error_message'] . '</div>';
-    unset($_SESSION['error_message']);
-}
+include_once "app/config.php";
 ?>
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+<!-- [Head] start -->
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TAILWIND ES MEJOR</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <title>
+    Login
+  </title>
+  <?php
+  include "layouts/head.php";
+  ?>
 </head>
-<body>
-    <div class="container">
-        <h1>Hola, estoy usando bootstrap</h1>
-      
-        <div class="row h-100">
-        <div class="col-md-6 d-none d-md-block">
-          <img src="assets/jedi.jpg" class="img-fluid w-100 h-100" style="object-fit: cover;">
-        </div>
-  
-        <div class="col-md-6 d-flex align-items-center justify-content-center">
-        <form class="w-75" method="POST" action="app/AuthController.php">
-            <div class="mb-3">
-                <h1>Hola, inscríbete para ser un Jedi</h1>
-                <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" name="contrasena">
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Mantenme informado</label>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
+<!-- [Head] end -->
+<!-- [Body] Start -->
 
-            <input type="hidden" name="action" value="access">
-            <input type="hidden" name="global_token" value="<?php echo $_SESSION['global_token']; ?>"> <!-- Aquí se envía el token -->
-        </form>
+<body data-pc-preset="preset-1" data-pc-sidebar-theme="light" data-pc-sidebar-caption="true" data-pc-direction="ltr" data-pc-theme="light">
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
 
+  <!-- [ Main Content ] start -->
+  <div class=" ms-auto auth-main v2">
+    <div class="bg-overlay bg-dark"></div>
+    <div class=" auth-wrapper">
+      <div class="auth-form">
+        <div class="card my-5 ms-auto me-4" style="min-height: 30vh!important;">
+          <div class="card-body">
+            <h4 class="f-w-500 mb-1">Login with your email</h4>
+            <p class="mb-3">Don't have an Account? <a href="register-v2.html" class="link-primary ms-1">Create Account</a></p>
+            <form method="POST" action="auth">
+              <input type="text" hidden name="action" value="login">
+              <input type="text" name="global_token" value=<?= $_SESSION['global_token'] ?> hidden>
+              <div class="mb-3">
+                <input type="email" name="email" class="form-control" id="floatingInput" placeholder="Email Address" />
+              </div>
+              <div class="mb-3">
+                <input type="password" name="password" class="form-control" id="floatingInput1" placeholder="Password" />
+              </div>
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+  </div>
+  <!-- [ Main Content ] end -->
 
-    <script src = "user.js"></script>
+  <?php
+
+  include "views/layouts/footer.php";
+
+  ?>
+  <?php
+
+  include "layouts/scripts.php";
+
+  ?>
+
+  <?php
+
+  include "layouts/modals.php";
+
+  ?>
+
 </body>
+<!-- [Body] end -->
+
 </html>
