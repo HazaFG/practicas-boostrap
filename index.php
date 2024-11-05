@@ -10,7 +10,7 @@ include_once "app/config.php";
     Login
   </title>
   <?php
-  include "layouts/head.php";
+  include "views/layouts/head.php";
   ?>
 </head>
 <!-- [Head] end -->
@@ -59,13 +59,13 @@ include_once "app/config.php";
   ?>
   <?php
 
-  include "layouts/scripts.php";
+  include "views/layouts/scripts.php";
 
   ?>
 
   <?php
 
-  include "layouts/modals.php";
+  include "views/layouts/modals.php";
 
   ?>
 
